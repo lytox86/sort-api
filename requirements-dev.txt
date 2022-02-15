@@ -1,0 +1,6 @@
+-r requirements.txt
+black==22.1.0
+pytest==7.0.1
+pytype==2022.2.8
+py2puml # py2puml ./src src
+types-requests

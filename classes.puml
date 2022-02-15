@@ -1,0 +1,23 @@
+@startuml
+class src.models.models.Input {
+  numbers: List[builtins.int] {static}
+}
+class src.models.models.InputAndAlgorythm {
+  algorythm: SortAlgorythm {static}
+}
+enum src.models.models.SortAlgorythm {
+  QUICKSORT: quicksort {static}
+}
+class src.services.sort_service.SortService {
+}
+class src.services.algorithms.abstract_sort.AbstractSort {
+}
+class src.services.algorithms.quick_sort.QuickSort {
+  _steps: int {static}
+  _array: List[builtins.int] {static}
+  _depth: int {static}
+}
+src.models.models.InputAndAlgorythm *-- src.models.models.SortAlgorythm
+src.models.models.Input <|-- src.models.models.InputAndAlgorythm
+src.services.algorithms.abstract_sort.AbstractSort <|-- src.services.algorithms.quick_sort.QuickSort
+@enduml
