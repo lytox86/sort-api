@@ -1,9 +1,7 @@
 from copy import copy
 
-from .abstract_sort import AbstractSort
 
-
-class QuickSort(AbstractSort):
+class QuickSort:
     _steps: int
     _array: list[int]
     _depth: int

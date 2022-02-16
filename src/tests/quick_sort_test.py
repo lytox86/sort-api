@@ -1,6 +1,6 @@
 from random import randint
 from unittest.mock import ANY
-from src.services.algorithms.quick_sort import QuickSort
+from src.services import QuickSort
 
 
 class TestQuickSort:

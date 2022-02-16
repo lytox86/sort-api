@@ -62,9 +62,5 @@ Send sort requests via
 ```shell
 curl --request POST 'localhost:8000/api/v1/sort/quick' --header 'Content-Type: application/json' --data-raw '{"numbers":[3,2,1,0,-1]}'
 ```
-or
-```shell
-curl --request POST 'localhost:8000/api/v1/sort' --header 'Content-Type: application/json' --data-raw '{"numbers":[3,2,1,0,-1],"algorythm":"quicksort"}'
-```
 `{"result":[-1,0,1,2,3],"sortingSteps":3}` will be printed.
 

@@ -1,7 +1,11 @@
 from http import HTTPStatus
+from unittest.mock import patch
 
+import pytest
 import requests
 from fastapi.testclient import TestClient
+
+from src.services import QuickSort
 
 
 class TestEnd2End:
@@ -11,16 +15,6 @@ class TestEnd2End:
         expected_sorted_array = list(range(n))
         input = {"numbers": unsorted_array}
         response: requests.Response = test_client.post("/api/v1/sort/quick", json=input)
-        assert response.status_code == HTTPStatus.OK
-        assert response.json()["result"] == expected_sorted_array
-        assert response.json()["sortingSteps"] == 73
-
-    def test_sort(self, test_client: TestClient):
-        n = 100
-        unsorted_array = list(range(n - 1, -1, -1))
-        expected_sorted_array = list(range(n))
-        input = {"numbers": unsorted_array, "algorythm": "quicksort"}
-        response = test_client.post("/api/v1/sort", json=input)
         assert response.status_code == HTTPStatus.OK
         assert response.json()["result"] == expected_sorted_array
         assert response.json()["sortingSteps"] == 73
@@ -39,20 +33,15 @@ class TestEnd2End:
             ]
         }
 
-    def test_sort_wrong_algorythm(self, test_client: TestClient):
-        input = {"numbers": [1, 2, 3, 5], "algorythm": "mergesort"}
-        response = test_client.post("/api/v1/sort", json=input)
-        assert response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
-        assert response.json() == {
-            "detail": [
-                {
-                    "ctx": {"enum_values": ["quicksort"]},
-                    "loc": ["body", "algorythm"],
-                    "msg": "value is not a valid enumeration member; permitted: 'quicksort'",
-                    "type": "type_error.enum",
-                }
-            ]
-        }
+    def test_quick_sort_exception(self, test_client: TestClient):
+        n = 100
+        unsorted_array = list(range(n - 1, -1, -1))
+        input = {"numbers": unsorted_array}
+        with patch.object(QuickSort, "sort", side_effect=IndexError()):
+            with pytest.raises(IndexError):
+                response: requests.Response = test_client.post(
+                    "/api/v1/sort/quick", json=input
+                )
 
     def test_invalid_call(self, test_client: TestClient):
         input = {"numbers": [1, 2, 3, 5]}
